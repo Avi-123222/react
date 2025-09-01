@@ -19,7 +19,7 @@ function App() {
       //   <h2>Mentor: <b>Sai Pranab</b></h2>
       // </React.Fragment> //we can write like this or 
 
-      <>
+      <>//it is only group component// we cannot provide any class or id to this or any styling
         <h1>{a+b === 30 ? "React is easy" : "React is difficult"}</h1>
        <h2>Mentor: <b>Sai Pranab</b></h2>
      </>
