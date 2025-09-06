@@ -1,3 +1,10 @@
+
+
+
+
+
+
+// import {  useState } from 'react';
 import {  useState } from 'react';
 import './App.css'
 let count = 0;
@@ -100,8 +107,8 @@ function App({root}) {
     <button onClick={increaseValueByThree} style={{
       backgroundColor:'yellowgreen',
     }}>Increase By Three</button> 
-    <br /><br />
-    <button style={{backgroundColor:"crimson"}}>{counter}</button> 
+    
+   
     <br /><br /> 
     <button onClick={decreaseValueByThree} style={{
       backgroundColor:'red',
