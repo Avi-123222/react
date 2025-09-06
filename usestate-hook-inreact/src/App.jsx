@@ -98,9 +98,11 @@ function App({root}) {
   return (
     <>
     <h1>Counter App</h1>
+     <button style={{backgroundColor:'crimson'}}>{counter}</button> 
+     <br /><br />
     <button onClick={increaseValueByOne}style={{backgroundColor:'darkorange'}}>Increase Value By One</button> 
-    <br /><br />
-    <button style={{backgroundColor:'crimson'}}>{counter}</button> 
+    
+   
     <br /><br /> 
     <button onClick={decreaseValueByOne} style={{backgroundColor:'darkgreen'}}>Decrease Value By One</button>
     <br /><br />
