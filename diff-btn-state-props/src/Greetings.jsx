@@ -11,6 +11,6 @@ export default function Greetings({name,children}) {
             <p>You clicked the button {clickCount} times</p>
             <button onClick={()=>{setClickCount((prev)=>prev+1)}}>Click Here</button>
      <div style={{marginTop:"10px",padding:"10px",backgroundColor:"darkred"}}>{children}</div>
-        </div>
-    )
+       </div>
+   )
 }

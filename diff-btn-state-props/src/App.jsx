@@ -6,18 +6,23 @@ import Greetings from './Greetings'
 function App() {
   console.log("parent component")
   const [name,setName] = useState('Avishek')
-
+  const [showGreeting,setShowGreeting] = useState(true)
+   console.log('showGreeting',showGreeting)
   return (
     <div style={{padding:"20px"}}>
       <h1>React Props Vs States</h1>
       {/* <Greetings name={name} /> */}
-      <Greetings name={name}>
+      <button onClick={()=>setShowGreeting(!showGreeting)}>
+        {showGreeting ? "Hide Greeting" : "Show Greeting"}
+         </button>
+      {
+        showGreeting  && 
+        <Greetings name={name}>
         <p>This is extra element passed is<strong> Children </strong></p>
       We can pass more elments ,text,components etc.
       </Greetings>
-       <button  style={{marginTop:"10px"}} onClick={()=>{setName((perv)=>perv+1)}}>click me</button>
-
-      
+      }
+        <button  style={{marginTop:"10px"}} onClick={()=>{setName((perv)=>perv+1)}}>click me</button> 
     </div>
   )
 }
