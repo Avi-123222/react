@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import './App.css'
+
 import Greetings from './Greetings'
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
     <div style={{padding:"20px"}}>
       <h1>React Props Vs States</h1>
       {/* <Greetings name={name} /> */}
-      <button onClick={()=>setShowGreeting(!showGreeting)}>
+      <button className = "button"onClick={()=>setShowGreeting(!showGreeting)}>
         {showGreeting ? "Hide Greeting" : "Show Greeting"}
          </button>
       {
