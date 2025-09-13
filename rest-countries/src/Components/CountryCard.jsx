@@ -1,8 +1,8 @@
-function CountryCard({flag,name,population,region,capital}) {
-    return (
-        <a className="country-card" href="#">
+function CountryCard({ flag, name, population, region, capital}) {
+  return (
+    <a className="country-card" href="#">
       <div className='flag-container'>
-        <img src={flag} alt={name+ ' Flag'} />
+        <img src={flag} alt={name + ' Flag'} />
       </div>
       <div className="card-text">
         <h3 className="card-title">{name}</h3>
@@ -14,10 +14,11 @@ function CountryCard({flag,name,population,region,capital}) {
           <b>Region: </b>{region}
         </p>
         <p>
-            <b>Capital: </b>{capital}
+          <b>Capital: </b>{capital}
         </p>
-     </div>
+      </div>
     </a>
-    )
+  )
 }
+
 export default CountryCard
