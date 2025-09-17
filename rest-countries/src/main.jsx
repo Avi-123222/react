@@ -1,11 +1,12 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AboutPage from './Components/AboutPage.jsx';
 import Header from './Components/Header.jsx';
 import Home from './Components/Home.jsx';
 import Errorpage from './Components/ErrorPage.jsx';
+import CountryDetails from './Components/CountryDetails.jsx';
 
 const router = createBrowserRouter([
   {
@@ -22,13 +23,18 @@ const router = createBrowserRouter([
         Component: AboutPage,
         children: [
           { path: 'abc' , 
-            element: <p>I am the ghost of Uchiha</p>
+            element: <h1>I am the ghost of Uchiha</h1>
           }
         ] 
       },
       {
         index : true,
         Component: Home
+      },
+      {
+        path :'country',
+        Component : CountryDetails
+
       }
     ]
   },
