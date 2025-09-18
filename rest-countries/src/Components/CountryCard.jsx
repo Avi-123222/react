@@ -1,6 +1,6 @@
 function CountryCard({ flag, name, population, region, capital}) {
   return (
-    <a className="country-card" href={`/country?name=${name}`}>
+    <a className="country-card" to={`/${name}`}>
       <div className='flag-container'>
         <img src={flag} alt={name + ' Flag'} />
       </div>

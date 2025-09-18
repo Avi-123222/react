@@ -32,10 +32,14 @@ const router = createBrowserRouter([
         Component: Home
       },
       {
-        path :'country',
+        path :':country',
         Component : CountryDetails
 
-      }
+      },
+      // {
+      //   path:':xyz',
+      //   element:<h1>Starting with Dynamic routing</h1>
+      // }
     ]
   },
 ])
