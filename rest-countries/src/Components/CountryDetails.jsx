@@ -1,9 +1,13 @@
 import {useEffect,useState} from 'react'
 import './CountryDetail.css'
 export default function CountryDetails() {
+
+
+    const countryName = new URLSearchParams(location.search).get('name')
+   
   const [countryData,setCountryData] = useState(null)
   useEffect(()=>{
-      fetch(`https://restcountries.com/v3.1/name/India?fullText=true`)
+      fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
       .then((res) => {
       return  res.json()
       })
@@ -18,6 +22,10 @@ export default function CountryDetails() {
           subregion:data.subregion,
           capital:data.capital.join(','),
           tld:data.tld.join(", "),
+          currencies:Object.values(data.currencies).map(curr => curr.name).join(',  '),
+          languages:Object.values(data.languages).join(', '),
+
+
 
         })
       })
@@ -29,7 +37,7 @@ export default function CountryDetails() {
   (
      <main>
             <div className="country-details-container">
-                <span className="back-button">
+                <span className="back-button" onClick ={() => history.back()}>
                     <i className="fa-solid fa-arrow-left"></i>&nbsp; Back
                 </span>
                 <div className="country-details">
@@ -64,11 +72,11 @@ export default function CountryDetails() {
                                 <span className="top-level-domain"></span>
                             </p>
                             <p>
-                                <b>Currencies: </b>
+                                <b>Currencies:{countryData.currencies} </b>
                                 <span className="currencies"></span>
                             </p>
                             <p>
-                                <b>Languages: </b>
+                                <b>Languages: {countryData.languages}</b>
                                 <span className="languages"></span>
                             </p>
                         </div>
