@@ -7,6 +7,7 @@ export default function CountryDetails() {
     //const countryName = new URLSearchParams(location.search).get('name')
     const params = useParams()
     const countryName = params.country
+    const [notFound, setNotFound] = useState(false)
    
   const [countryData,setCountryData] = useState(null)
   useEffect(()=>{
@@ -34,8 +35,14 @@ export default function CountryDetails() {
       })
       .catch((err) =>{
         console.log("error occured",err)
+        setNotFound(true)
       })
   },[])
+  if(notFound){
+    return <h1>Country not Found</h1>
+  }
+
+
   return countryData === null?<h2>loading....</h2>:
   (
      <main>
