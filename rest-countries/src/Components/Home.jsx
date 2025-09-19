@@ -10,8 +10,7 @@ export default function Home(){
           <SearchBar setQuery={setQuery} />
           <SelectMenu />
         </div>
-         {query==='unmount' ? "Component is  not visible":"Component is  visible"}
-      { query !== 'unmount'&& <CountriesList query={query} />}
+         <CountriesList query={query}/>
       </main>
     )
 }

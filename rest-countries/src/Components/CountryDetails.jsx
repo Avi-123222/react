@@ -1,53 +1,68 @@
-import {useEffect,useState} from 'react'
+import { useEffect, useState } from 'react'
 import './CountryDetail.css'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
+
+
+
 export default function CountryDetails() {
-
-
-    //const countryName = new URLSearchParams(location.search).get('name')
     const params = useParams()
     const countryName = params.country
+
     const [notFound, setNotFound] = useState(false)
-   
-  const [countryData,setCountryData] = useState(null)
-  useEffect(()=>{
-      fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
-      .then((res) => {
-      return  res.json()
-      })
-      .then(([data])=>{
-        console.log('data',data)
-        setCountryData({
-          flag:data.flags.svg,
-          name:data.name.commmon,
-          nativeName:Object.values(data.name.nativeName)[0].common,
-          population:data.population.toLocaleString('en-IN'),
-          region:data.region,
-          subregion:data.subregion,
-          capital:data.capital.join(','),
-          tld:data.tld.join(", "),
-          currencies:Object.values(data.currencies).map(curr => curr.name).join(',  '),
-          languages:Object.values(data.languages).join(', '),
 
-
-
+    const [countryData, setCountryData] = useState(null)
+    useEffect(() => {
+        fetch(`https://restcountries.com/v3.1/name/${countryName}?fullText=true`)
+        .then((res) => {
+           return res.json()
         })
-      })
-      .catch((err) =>{
-        console.log("error occured",err)
-        setNotFound(true)
-      })
-  },[])
-  if(notFound){
-    return <h1>Country not Found</h1>
-  }
+        .then(([data]) => {
+            console.log('data', data)
+            setCountryData({
+                flag: data.flags.svg,
+                name: data.name.common,
+                nativeName: Object.values(data.name.nativeName)[0].common,
+                population: data.population.toLocaleString('en-IN'),
+                region: data.region,
+                subregion: data.subregion,
+                capital: data.capital.join(', '),
+                tld: data.tld.join(', '),
+                currencies: Object.values(data.currencies).map(curr => curr.name).join(", "),
+                languages: Object.values(data.languages).join(', '),
+                borders: [],
+            })
 
+            if(!data.borders) {
+                data.borders = []
+            }
 
-  return countryData === null?<h2>loading....</h2>:
-  (
-     <main>
+            data.borders.map((border) => {
+                fetch(`https://restcountries.com/v3.1/alpha/${border}`)
+                    .then((res) => {
+                        return res.json();
+                    })
+                    .then(([borderCountry]) => {
+                        // console.log("countryyyyyyyyyyyyyyyyy", borderCountry.name.common)
+                        console.log('countryDataaaaaaaaaaaaaaaaaaa', countryData)
+                        setCountryData((prev) => ({...prev, borders: [...prev.borders, borderCountry.name.common]}) )
+                    })
+                })
+        })
+        .catch((err) => {
+            console.log("error occurred", err)
+            setNotFound(true)
+        })
+    }, [countryName])
+
+    if(notFound) {
+        return <h1>Country Not Found</h1>
+    }
+
+    return countryData === null ? <h2>loading....</h2> :
+    (
+        <main>
             <div className="country-details-container">
-                <span className="back-button" onClick ={() => history.back()}>
+                <span className="back-button" onClick={() => history.back()} >
                     <i className="fa-solid fa-arrow-left"></i>&nbsp; Back
                 </span>
                 <div className="country-details">
@@ -82,7 +97,7 @@ export default function CountryDetails() {
                                 <span className="top-level-domain"></span>
                             </p>
                             <p>
-                                <b>Currencies:{countryData.currencies} </b>
+                                <b>Currencies: {countryData.currencies}</b>
                                 <span className="currencies"></span>
                             </p>
                             <p>
@@ -91,17 +106,11 @@ export default function CountryDetails() {
                             </p>
                         </div>
                         <div className="border-countries">
-                            <b>Border Countries: </b>&nbsp;
+                            <b>Border Countries: {countryData.borders.map((border) => <Link to={`/${border}`} > {border} </Link>)} </b>&nbsp;
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-    
-  )
+    )
 }
-
-
-
-
-

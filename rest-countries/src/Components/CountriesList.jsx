@@ -1,5 +1,6 @@
 import React, { useEffect,useState } from 'react'
 import CountryCard from './CountryCard.jsx'
+import CountryListShimmer from './CountryListShimmer.jsx'
 
 export default function CountriesList({ query }) {
   // let countriesData = []
@@ -61,6 +62,7 @@ export default function CountriesList({ query }) {
     <>
     {/* <button onClick={() => {setCount(count+1)}}>Increment</button>
     <button onClick={() => {setCountriesData([])}}>Remove All Countries</button> */}
+    <CountryListShimmer />
 
     <div className="countries-container">
       { 
