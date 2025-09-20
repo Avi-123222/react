@@ -52,18 +52,21 @@ export default function CountriesList({ query }) {
   //   }
     
   // },[])
+  
 
    
 
   const filteredCountries = countriesData.filter((country) => 
             country.name.common.toLowerCase().includes(query))
 
+if(!countriesData.length){
+    return <CountryListShimmer />
+  }
   return (
     <>
     {/* <button onClick={() => {setCount(count+1)}}>Increment</button>
     <button onClick={() => {setCountriesData([])}}>Remove All Countries</button> */}
-    <CountryListShimmer />
-
+   
     <div className="countries-container">
       { 
          filteredCountries.map(

@@ -1,5 +1,5 @@
-/* ==================== App.css (UPTO 160 line)========================== */
-@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Double:wght@100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200..1000&display=swap');
+
 * {
     box-sizing: border-box;
 }
@@ -17,10 +17,10 @@ main, header {
     color: var(--text-color);
 }
 
-main.dark, header.dark {
-    --background-color: hsl(207, 26%, 17%); 
+main.dark, header.dark, body.dark {
+    --background-color: hsl(209, 26%, 17%); 
     --text-color: white;
-    --elements-color: hsl(209, 23%, 22%);
+    --elements-color: hsl(208, 23%, 22%);
 }
 
 main {
@@ -31,8 +31,8 @@ main {
 a {
     text-decoration-line: none;
     color: inherit;
-    display:inline-block;
-    margin:5px 4px;
+    display: inline-block;
+    margin: 5px 4px;
 }
 
 .header-container {
@@ -171,11 +171,35 @@ a {
     .search-filter-container {
         flex-direction: column;
     }
-    
 }
 
 /* CountriesList Shimmer UI */
-.shimmer-card {
+body .shimmer-card {
     height: 314px;
-    background-color: #c7c7c7;
+    background-color: var(--elements-color);
+    --shimmer-color: #c7c7c7;
+}
+
+body.dark .shimmer-card {
+    --shimmer-color: #475a6c;
+}
+
+.shimmer-card .flag-container {
+    background-color: var(--shimmer-color);
+}
+
+.shimmer-card .card-title {
+    height: 32px;
+    background-color: var(--shimmer-color);
+    border-radius: 2px;
+}
+
+.shimmer-card p {
+    height: 22px;
+    background-color: var(--shimmer-color);
+    border-radius: 2px;
+}
+
+.shimmer-card p:last-child {
+    width: 60%;
 }
