@@ -1,44 +1,64 @@
-
-import { useState, type FormEvent } from "react"
-import type { Expense } from "../model";
+import { useEffect, useRef, useState, type FormEvent } from "react"
+import type { Expense, ExpenseError, ValidationsRules } from "../model";
+import Input from "./Input";
+import Select from "./Select";
 
 interface ExpenseFormProps {
   setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
 function ExpenseForm({ setExpenses }: ExpenseFormProps) {
-  // const [title, setTitle] = useState<string>('');
-  // const [category, setCategory] = useState<string>('')
-  // const [amount, setAmount] = useState<string>('')
-
-  // function handleSubmit(e: FormEvent): void {
-  //   e.preventDefault()
-
-  //   const expense: Expense = {
-  //     id: crypto.randomUUID(),
-  //     title,
-  //     category,
-  //     amount
-  //   }
-
-  //   setExpenses(expenses => ([...expenses, expense]));
-
-  //   setTitle('')
-  //   setCategory('')
-  //   setAmount('')
-  // }
-
+  console.log('rendering')
   const [expense, setExpense] = useState<Expense>({
     id: '',
     title: '',
     category: '',
     amount: ''
   })
+  const [errors, setErrors] = useState<ExpenseError>({
+    title: '',
+    category: '',
+    amount: ''
+  });
+  
+  const validationRules:any = {
+    id: [],
+    title: [
+      { required: true, message: "Title is required" },
+      { minLength: 3, message: "Title should be atleast 3 characters long" }
+    ]
+  }
+
+  function validate(formData: Expense): ExpenseError {
+    const errorData: ExpenseError = {
+      title: '',
+      category: '',
+      amount: ''
+    };
+
+    Object.entries(formData).forEach(([key, value]) => validationRules[key].some((rule: any) => {
+        if(rule.required && !value) {
+            console.log(rule.message)
+            return true
+        }
+
+        if(rule.minLength && value.length < 3) {
+            console.log(rule.message)
+            return true
+        }
+    }))
+
+    setErrors(errorData)
+    return errorData
+  }
 
   function handleSubmit(e: FormEvent): void {
     e.preventDefault()
 
-    const newExpense:Expense = {
+    const errorData: ExpenseError = validate(expense)
+    if(Object.values(errorData).some(val => val !== '')) return
+
+    const newExpense: Expense = {
       id: crypto.randomUUID(),
       title: expense.title,
       category: expense.category,
@@ -49,7 +69,6 @@ function ExpenseForm({ setExpenses }: ExpenseFormProps) {
       ...prevExpenses, newExpense
     ]))
 
-    // for resetting form
     setExpense({
       id: '',
       title: '',
@@ -58,31 +77,49 @@ function ExpenseForm({ setExpenses }: ExpenseFormProps) {
     })
   }
 
+  function handleChange(e: FormEvent): void {
+    const { name, value } = (e.target as HTMLFormElement);
+
+    setExpense(prevExpense => ({
+      ...prevExpense,
+      [name]: value
+    }))
+
+    setErrors(prevErros => ({
+      ...prevErros,
+      [name] : ''
+    }))
+  }
+
   return (
     <>
       <form className="expense-form" onSubmit={handleSubmit}>
-        <div className="input-container">
-          <label htmlFor="title">Title</label>
-          <input id="title" name="title" value={expense.title} 
-                  onChange={(e: any) => setExpense((prev) => ({...prev, title: e.target.value}))}/>
-        </div>
-        <div className="input-container">
-          <label htmlFor="category">Category</label>
-          <select id='category' name='category' value={expense.category} 
-                  onChange={(e: any) => setExpense((prev) => ({...prev, category: e.target.value}))}>
-            <option hidden>Select Category</option>
-            <option value="Grocery">Grocery</option>
-            <option value="Clothes">Clothes</option>
-            <option value="Bills">Bills</option>
-            <option value="Education">Education</option>
-            <option value="Medicine">Medicine</option>
-          </select>
-        </div>
-        <div className="input-container">
-          <label htmlFor="amount">Amount</label>
-          <input id="amount" name="amount" value={expense.amount} 
-                  onChange={(e: any) => setExpense((prev) => ({...prev, amount: e.target.value}))}/>
-        </div>
+        <Input
+          label="Title"
+          id="title"
+          name="title"
+          value={expense.title}
+          onChange={handleChange}
+          error={errors.title}
+        />
+        <Select
+          label="Category"
+          id="category"
+          name="category"
+          value={expense.category}
+          onChange={handleChange}
+          defaultOption="Select Category"
+          options={["Grocery", "Clothes", "Bills", "Education", "Medicine"]}
+          error={errors.category}
+        />
+        <Input 
+          label="Amount"
+          id="amount"
+          name="amount"
+          value={expense.amount}
+          onChange={handleChange}
+          error={errors.amount}
+        />
         <button className="add-btn">Add</button>
       </form>
     </>
