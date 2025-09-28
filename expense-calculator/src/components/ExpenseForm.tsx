@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react"
+import {  useState, type FormEvent } from "react"
 import type { Expense, ExpenseError } from "../model";
 import Input from "./Input";
 import Select from "./Select";
