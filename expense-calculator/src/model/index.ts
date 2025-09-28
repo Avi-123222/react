@@ -4,9 +4,14 @@ export interface Expense {
   category: string,
   amount: string
 }
-export interface ExpenseError{
+
+export interface ExpenseError {
   title: string,
   category: string,
   amount: string
 }
 
+export interface MenuPosition {
+  left: number, 
+  top: number
+}
