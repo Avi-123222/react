@@ -1,38 +1,36 @@
-import {  useState, type FormEvent } from "react"
+
+import { useState, type Dispatch, type FormEvent, type SetStateAction } from "react"
 import type { Expense, ExpenseError } from "../model";
 import Input from "./Input";
 import Select from "./Select";
 
 interface ExpenseFormProps {
-  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
+  setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>,
+  expense: Expense,
+  setExpense: Dispatch<SetStateAction<Expense>>
+  editingRowId: string
+  setEditingRowId: Dispatch<SetStateAction<string>>
 }
 
-function ExpenseForm({ setExpenses }: ExpenseFormProps) {
-  console.log('rendering')
-  const [expense, setExpense] = useState<Expense>({
-    id: '',
-    title: '',
-    category: '',
-    amount: ''
-  })
+function ExpenseForm({ setExpenses, expense, setExpense, editingRowId, setEditingRowId }: ExpenseFormProps) {
   const [errors, setErrors] = useState<ExpenseError>({
     title: '',
     category: '',
     amount: ''
   });
-  
-  const validationRules:any = {
+
+  const validationRules: any = {
     id: [],
     title: [
       { required: true, message: "Title is required" },
       { minLength: 3, message: "Title should be atleast 3 characters long" }
     ],
-    category:[
+    category: [
       { required: true, message: "Category is required" }
     ],
     amount: [
       { required: true, message: "Amount is required" },
-      {pattern: /^(0|[1-9]\d*)$/, message:"Amount must be a valid number" }
+      { pattern: /^(0|[1-9]\d*)$/, message: "Amount should be positive or zero" }
     ]
   }
 
@@ -44,18 +42,20 @@ function ExpenseForm({ setExpenses }: ExpenseFormProps) {
     };
 
     Object.entries(formData).forEach(([key, value]) => validationRules[key].some((rule: any) => {
-        if(rule.required && !value) {
-          errorData[key as keyof ExpenseError]=rule.message
-            return true
-        }
+      if (rule.required && !value) {
+        errorData[key as keyof ExpenseError] = rule.message
+        return true
+      }
 
-        if(rule.minLength && value.length < 3) {
-           errorData[key as keyof ExpenseError]=rule.message
-            return true
-        }
-        if(rule.pattern && !rule.pattern.test(value)) {
-            errorData[key as keyof ExpenseError]=rule.message
-        }
+      if (rule.minLength && value.length < 3) {
+        errorData[key as keyof ExpenseError] = rule.message
+        return true
+      }
+
+      if (rule.pattern && !rule.pattern.test(value)) {
+        errorData[key as keyof ExpenseError] = rule.message
+        return true;
+      }
     }))
 
     setErrors(errorData)
@@ -66,7 +66,29 @@ function ExpenseForm({ setExpenses }: ExpenseFormProps) {
     e.preventDefault()
 
     const errorData: ExpenseError = validate(expense)
-    if(Object.values(errorData).some(val => val !== '')) return
+    if (Object.values(errorData).some(val => val !== '')) return
+
+    if(editingRowId) {
+      setExpenses(prevExpenses => {
+        return prevExpenses.map(prevExpense => {
+          if(prevExpense.id === editingRowId) {
+            return {...expense}
+          }
+
+          return prevExpense
+        })
+      })
+
+      setExpense({
+        id: '',
+        title: '',
+        category: '',
+        amount: ''
+      })
+
+      setEditingRowId('')
+      return  
+    }
 
     const newExpense: Expense = {
       id: crypto.randomUUID(),
@@ -97,7 +119,7 @@ function ExpenseForm({ setExpenses }: ExpenseFormProps) {
 
     setErrors(prevErros => ({
       ...prevErros,
-      [name] : ''
+      [name]: ''
     }))
   }
 
@@ -122,7 +144,7 @@ function ExpenseForm({ setExpenses }: ExpenseFormProps) {
           options={["Grocery", "Clothes", "Bills", "Education", "Medicine"]}
           error={errors.category}
         />
-        <Input 
+        <Input
           label="Amount"
           id="amount"
           name="amount"
@@ -130,7 +152,7 @@ function ExpenseForm({ setExpenses }: ExpenseFormProps) {
           onChange={handleChange}
           error={errors.amount}
         />
-        <button className="add-btn">Add</button>
+        <button className="add-btn">{editingRowId ? "Save" : "Add"}</button>
       </form>
     </>
   )

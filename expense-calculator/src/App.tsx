@@ -3,18 +3,25 @@ import './App.css'
 import ExpenseForm from './components/ExpenseForm'
 import ExpenseTable from './components/ExpenseTable'
 import type { Expense } from './model'
-import ExpenseData from './ExpenseData'
+import expenseData from './ExpenseData'
 
 function App() {
-  const [expenses, setExpenses] = useState<Expense[]>(ExpenseData);
+  const [expenses, setExpenses] = useState<Expense[]>(expenseData);
+  const [expense, setExpense] = useState<Expense>({
+    id: '',
+    title: '',
+    category: '',
+    amount: ''
+  })
+  const[editingRowId, setEditingRowId] = useState<string>('')
 
   return (
     <>
       <main>
         <h1>Track Your Expense</h1>
         <div className="expense-tracker">
-          <ExpenseForm setExpenses={setExpenses}/>
-          <ExpenseTable expenses={expenses} setExpenses={setExpenses}/>
+          <ExpenseForm setExpenses={setExpenses} expense={expense} setExpense={setExpense} editingRowId={editingRowId} setEditingRowId={setEditingRowId}/>
+          <ExpenseTable expenses={expenses} setExpenses={setExpenses} setExpense={setExpense} setEditingRowId={setEditingRowId}/>
         </div>
       </main>
     </>
